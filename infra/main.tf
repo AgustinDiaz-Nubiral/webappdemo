@@ -1,35 +1,44 @@
 # main.tf
 
-provider "azurerm" {
-  features {}
-}
+
 
 resource "azurerm_resource_group" "resource-group" {
-  name     = "appDemo-resources"
-  location = "eastus"
+  name     = var.rgname
+  location = var.location
 
   tags = {
-    Environment = "Production"
-    Department  = "IT"
-    Project     = "HelloWorldApp"
+    CreateBy = "AgustinDiaz"
+    Project  = "webapppocdemo"
+    Pod      = "2"
+    Deadline = "Servicios"
+    Owner    = "Pod2"
   }
 }
 
-resource "azurerm_app_service_plan" "service-plan" {
-  name                = "appDemo-appserviceplan"
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.appDemo-resource
+resource "azurerm_storage_account" "storage-account" {
+  name                     = "sawebapppoc-ad"
+  resource_group_name      = azurerm_resource_group.resource-group.name
+  location                 = azurerm_resource_group.resource-group.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+  account_kind = "StorgageV2"
+}
+
+resource "azurerm_app_service_plan" "appplan" {
+  name                = "appdemo-appserviceplan"
+  location            = azurerm_resource_group.resource-group.location
+  resource_group_name = azurerm_resource_group.resource-group.name
   sku {
-    tier = "Basic"
-    size = "B1"
+    tier = "Standard"
+    size = "S1"
   }
 }
 
 resource "azurerm_app_service" "app-service" {
-  name                = "appDemo-appservice"
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
-  app_service_plan_id = azurerm_app_service_plan.example.id
+  name                = "appdemo-appservice"
+  location            = azurerm_resource_group.resource-group.location
+  resource_group_name = azurerm_resource_group.resource-group.name
+  app_service_plan_id = azurerm_app_service_plan.appplan.id
 
   app_settings = {
     "WEBSITE_RUN_FROM_PACKAGE" = "1"
