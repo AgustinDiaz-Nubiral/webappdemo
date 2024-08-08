@@ -1,0 +1,8 @@
+location            = "eastus"
+rgname              = "webapppocdemoagu"
+owner               = "Pod2"
+createdby           = "AgustinDiaz"
+project             = "pocwa"
+pod                 = "2"
+coe                 = "1"
+deadline            = "SERVICIOS"
