@@ -1,7 +1,7 @@
-/*terraform {
+terraform {
   backend "azurerm" {
-    storage_account_name = "sawebapppoc-ad"
-    container_name       = "webappstate"
+    storage_account_name = "sawebappdemoadiaz"
+    container_name       = "webapptfstate"
     key                  = "stateActions.tfstate"
   }
-}*/
+}
