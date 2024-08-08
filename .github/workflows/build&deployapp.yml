@@ -2,8 +2,9 @@ name: Build and Deploy Docker Image
 
 on:
   push:
-    branches:
-     # - main
+    branches: [ "main" ]
+    paths:
+     # - 'src/**'
 
 jobs:
   build-and-deploy:
