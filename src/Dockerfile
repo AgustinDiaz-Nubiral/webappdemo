@@ -1,7 +1,5 @@
 #FROM nginx:latest
 
-#COPY ./coffee-shop-html-template /usr/share/nginx/html/webappdemo
-
 # Usa una imagen base que contenga nginx
 FROM nginx:alpine
 
@@ -15,10 +13,9 @@ RUN ls -ld /usr/share/nginx/html
 RUN chmod -R 755 /usr/share/nginx/html
 
 # Clona el repositorio
-RUN git clone https://github.com/AgustinDiaz-Nubiral/webappdemo.git /usr/share/nginx/html
+RUN git clone https://github.com/AgustinDiaz-Nubiral/webappdemo.git
 
-# Copia la configuración de nginx (si es necesario)
-# COPY nginx.conf /etc/nginx/nginx.conf
+COPY ./webappdemo/src/coffee-shop-html-template /usr/share/nginx/html/my-static-app
 
 # Comando para iniciar nginx
 CMD ["nginx", "-g", "daemon off;"]
