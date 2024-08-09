@@ -17,6 +17,7 @@ jobs:
     defaults:
        run:
         working-directory: ./src
+        
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
