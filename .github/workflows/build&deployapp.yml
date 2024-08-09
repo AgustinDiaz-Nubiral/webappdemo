@@ -26,6 +26,11 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Log in to ACR
+      run: |
+        echo ${{ secrets.ACR_NAME }}.azurecr.io \
+        && az acr login --name ${{ secrets.ACR_NAME }}
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
     
@@ -33,12 +38,13 @@ jobs:
       id: get-token
       run: |
         TOKEN=$(az acr login --name ${{ secrets.ACR_NAME }} --expose-token --output tsv --query accessToken)
-        echo "##[set-output name=TOKEN;]$TOKEN"
+        echo "TOKEN=$TOKEN" >> $GITHUB_ENV
         
-    - name: Login to Azure Container Registry
+    - name: Use ACR Token
       run: |
-        echo ${{ steps.get-token.outputs.TOKEN }} | docker login ${{ secrets.ACR_NAME }}.azurecr.io -u agustindiaz --password-stdin
-    
+          echo "Using the ACR token: $TOKEN"
+          docker login ${{ secrets.ACR_NAME }}.azurecr.io -u 00000000-0000-0000-0000-000000000000 -p $TOKEN
+          
     - name: Build and Push Docker image
       run: |
         docker buildx build --platform linux/amd64 --push \
