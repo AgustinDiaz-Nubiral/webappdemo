@@ -17,5 +17,5 @@ RUN git clone https://github.com/AgustinDiaz-Nubiral/webappdemo
 
 # Copia los archivos de la aplicación al directorio donde Nginx los servirá
 # En este caso, el directorio por defecto de Nginx es /usr/share/nginx/html
-RUN cp -r /coffee-shop-html-template/* /usr/share/nginx/html/
+#RUN cp -r /coffee-shop-html-template/* /usr/share/nginx/html/
 
