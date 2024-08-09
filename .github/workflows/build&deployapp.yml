@@ -31,7 +31,13 @@ jobs:
 
     - name: Login to Azure Container Registry
       run: echo ${{ secrets.ACR_PASSWORD }} | docker login ${{ secrets.ACR_NAME }}.azurecr.io --username ${{ secrets.ACR_USERNAME }} --password-stdin
-
+    
+    - name: Get ACR Access Token
+      id: get-token
+      run: |
+        TOKEN=$(az acr login --name ${{ secrets.ACR_NAME }} --expose-token --output tsv --query accessToken)
+        echo "##[set-output name=TOKEN;]$TOKEN"
+   
     - name: Build and Push Docker image
       run: |
         docker buildx build --platform linux/amd64 --push \
