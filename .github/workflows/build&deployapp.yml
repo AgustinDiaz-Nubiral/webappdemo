@@ -9,15 +9,19 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
+    env:
+      AZURE_AD_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+      AZURE_AD_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+      AZURE_SUBCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_AD_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Login to Azure
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+   # - name: Login to Azure
+    #  uses: azure/login@v1
+     # with:
+      #  creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
