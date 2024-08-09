@@ -2,20 +2,17 @@
 
 #COPY ./coffee-shop-html-template /usr/share/nginx/html/webappdemo
 
-
-# Usa la imagen base oficial de Nginx
-FROM nginx:latest
+# Usa una imagen base que contenga nginx
+FROM nginx:alpine
 
 # Instala git para clonar el repositorio
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache git
 
-# Establece el directorio de trabajo en /app
-WORKDIR /src
+# Clona el repositorio
+RUN git clone https://github.com/AgustinDiaz-Nubiral/webappdemo.git /usr/share/nginx/html
 
-# Clona el repositorio de GitHub
-RUN git clone https://github.com/AgustinDiaz-Nubiral/webappdemo
+# Copia la configuración de nginx (si es necesario)
+# COPY nginx.conf /etc/nginx/nginx.conf
 
-# Copia los archivos de la aplicación al directorio donde Nginx los servirá
-# En este caso, el directorio por defecto de Nginx es /usr/share/nginx/html
-#RUN cp -r /coffee-shop-html-template/* /usr/share/nginx/html/
-
+# Comando para iniciar nginx
+CMD ["nginx", "-g", "daemon off;"]
