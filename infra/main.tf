@@ -32,6 +32,8 @@ resource "azurerm_container_registry" "acr" {
   location            = azurerm_resource_group.rg.location
   sku                 = "Basic"
   admin_enabled       = true
+  
+  tags = local.tags
 }
 
 
@@ -69,6 +71,7 @@ resource "azurerm_linux_web_app" "webappoc" {
   
 }
 # Asignar permisos ACR Pull para la Web App ------------------------------------------------------------------
+
 resource "azurerm_role_assignment" "acr_pull" {
   principal_id         = azurerm_linux_web_app.webappoc.identity[0].principal_id
   role_definition_name = "AcrPull"
