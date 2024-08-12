@@ -1,21 +1,15 @@
 #FROM nginx:latest
 
-# Usa una imagen base que contenga nginx
-FROM nginx:alpine
+# Usa una imagen base de Nginx
+FROM nginx:latest
 
-# Instala git para clonar el repositorio
-RUN apk add --no-cache git
+# Copia los archivos del repositorio al contenedor
+# El directorio /usr/share/nginx/html/ es el directorio por defecto para los archivos estáticos en Nginx
+COPY src/coffee-shop-html-template/ /usr/share/nginx/html/
 
-# Verifica los permisos del directorio de destino
-RUN ls -ld /usr/share/nginx/html
+# Expone el puerto 80
+EXPOSE 80
 
-# Ajusta los permisos si es necesario
-RUN chmod -R 755 /usr/share/nginx/html
-
-# Clona el repositorio
-RUN git clone https://github.com/AgustinDiaz-Nubiral/webappdemo.git
-
-COPY ./webappdemo/src/coffee-shop-html-template /usr/share/nginx/html/my-static-app
-
-# Comando para iniciar nginx
+# Comando por defecto para ejecutar Nginx en el contenedor
 CMD ["nginx", "-g", "daemon off;"]
+
