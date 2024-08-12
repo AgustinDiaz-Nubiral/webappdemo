@@ -28,8 +28,8 @@ resource "azurerm_resource_group" "rg" {
 
 resource "azurerm_container_registry" "acr" {
   name                = "acrappdemopoc"
-  resource_group_name = azurerm_resource_group.resource-group.name
-  location            = azurerm_resource_group.resource-group.location
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
   sku                 = "Basic"
   admin_enabled       = true
 }
@@ -62,6 +62,11 @@ resource "azurerm_linux_web_app" "webappoc" {
     minimum_tls_version = "1.2"
     always_on = true
   }
+  identity {
+    type = "SystemAssigned"
+  }
+
+  
 }
 # Asignar permisos ACR Pull para la Web App ------------------------------------------------------------------
 resource "azurerm_role_assignment" "acr_pull" {
