@@ -35,20 +35,6 @@ resource "azurerm_container_registry" "acr" {
 }
 
 
-#Create Storage Account----------------------------------------------------------------------------------------
-
-resource "azurerm_storage_account" "storage-account" {
-  name                     = "sawebapppoc-ad"
-  resource_group_name      = azurerm_resource_group.rg.name
-  location                 = azurerm_resource_group.rg.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-  account_kind             = "StorageV2"
-
-  tags                = local.tags
-}
-
-
 #Create Service Plan------------------------------------------------------------------------------------------
 
 resource "azurerm_service_plan" "appplan" {
@@ -56,7 +42,7 @@ resource "azurerm_service_plan" "appplan" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   os_type             = "Linux"
-  sku_name            = "P1v2"
+  sku_name            = "B1"
 
   tags                = local.tags
 }
@@ -76,5 +62,11 @@ resource "azurerm_linux_web_app" "webappoc" {
     minimum_tls_version = "1.2"
     always_on = true
   }
+}
+# Asignar permisos ACR Pull para la Web App ------------------------------------------------------------------
+resource "azurerm_role_assignment" "acr_pull" {
+  principal_id         = azurerm_linux_web_app.webappoc.identity[0].principal_id
+  role_definition_name = "AcrPull"
+  scope                = azurerm_container_registry.acr.id
 }
   
