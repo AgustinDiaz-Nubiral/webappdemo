@@ -1,11 +1,11 @@
 name: Deploy Infraestructure
-on:
-  workflow_dispatch:
+
 on:
   push:
     branches: [ "main" ]
     paths:
       - 'infra/**'
+      
 jobs:
   deploy:
     name: Terraform settings
