@@ -27,7 +27,7 @@ resource "azurerm_resource_group" "rg" {
 #Create Azure Container Registry-------------------------------------------------------------------------------
 
 resource "azurerm_container_registry" "acr" {
-  name                = "acrappdemo-adiaz"
+  name                = "acrappdemoadiaz"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   sku                 = "Basic"
@@ -63,7 +63,11 @@ resource "azurerm_linux_web_app" "webappoc" {
   site_config {
     minimum_tls_version = "1.2"
     always_on = true
-    linux_fx_version = "DOCKER|${azurerm_container_registry.acr.login_server}/my-app:latest"
+  }
+
+
+  identity {
+    type = "SystemAssigned"
   }
   app_settings = {
     "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.acr.login_server}"
