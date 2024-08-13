@@ -1,4 +1,4 @@
-#FROM nginx:latest
+##FROM nginx:latest
 
 # Usa una imagen base de Nginx
 FROM nginx:latest
