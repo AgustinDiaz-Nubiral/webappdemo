@@ -4,40 +4,41 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - 'infra/**'
+    - 'infra/**'
 
 jobs:
   deploy:
     name: Terraform settings
     runs-on: ubuntu-latest
+
     env:
       AZURE_AD_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
       AZURE_AD_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
       AZURE_SUBCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_AD_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
 
-  defaults:
-    run:
-      working-directory: ./infra
+    defaults:
+      run:
+        working-directory: ./infra
 
     steps:
-    - name: Check out the repo
-      uses: actions/checkout@v4
+      - name: Check out the repo
+        uses: actions/checkout@v4
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
 
-    - name: Terraform version
-      run: terraform version
+      - name: Terraform version
+        uses: terraform version
 
-    - name: Terraform init
-      run: terraform init -backend-config-"sas_token=${{ secrets.SAS_TOKEN }}"
+      - name: Terraform init
+        run: terraform init -backend-config-"sas_token=${{ secrets.SAS_TOKEN }}"
 
-    - name: Terraform validate
-      run: terraform validate
+      - name: Terraform validate
+        run: terraform validate
 
-    - name: Terraform Plan
-      run: terraform plan
+      - name: Terraform Plan
+        run: terraform plan
 
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
