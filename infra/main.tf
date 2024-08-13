@@ -50,7 +50,7 @@ resource "azurerm_service_plan" "appplan" {
 }
 
 
-#Create Web App-----------------------------------------------------------------------------------------------
+#Create Web App----------------------------------------------------------------------------------------------
 
 resource "azurerm_linux_web_app" "webappoc" {
   name                = "webappdemo-adiaz"
