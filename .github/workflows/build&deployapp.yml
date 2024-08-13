@@ -51,7 +51,7 @@ jobs:
         docker buildx build --platform linux/amd64 --push \
           -t ${{ secrets.ACR_NAME }}.azurecr.io/webapp:${{ github.sha }} \
           -t ${{ secrets.ACR_NAME }}.azurecr.io/webapp:latest \
-          src/
+          webappdemo/src/
           
     - name: Azure Container Registry Logout
       run: |
