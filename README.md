@@ -104,6 +104,7 @@ Las variables en Terraform se configuran en un archivo llamado `terraform.tfvars
 
 Para gestionar diferentes entornos (por ejemplo, `dev`, `staging`, `prod`), puedes crear archivos `tfvars` específicos para cada uno.
 
+
 ## Despliegue de la Aplicación en Azure Web App y automatizacion con Github Actions.
 [](https://github.com/AgustinDiaz-Nubiral/webappdemo#automatizaci%C3%B3n-con-github-actions)
 
@@ -114,6 +115,7 @@ Configurar GitHub Actions:
 ```
 name: Build and Deploy Docker Image
 ```
+
 2. ***Eventos que Desencadenan el Workflow***
 - **on**: Define los eventos que desencadenan el workflow.
 -   **push**: Este workflow se ejecutará cuando se realice un push a la rama `"main"`.
@@ -145,6 +147,7 @@ jobs:
        run:
         working-directory: ./src` 
 ```
+
 4. ***Inicio de sesión en Azure***
 -   **uses**: Utiliza la acción `azure/login@v1` para autenticarte en Azure usando las credenciales almacenadas en `AZURE_CREDENTIALS`.
 ```
@@ -153,6 +156,7 @@ jobs:
   with:
     creds: ${{ secrets.AZURE_CREDENTIALS }}` 
 ```
+
 5. ***Inicio de sesión en Azure Container Registry (ACR)***
 -   **run**: Ejecuta un script para iniciar sesión en ACR utilizando el comando de Azure CLI.
 ```
@@ -161,6 +165,7 @@ jobs:
     echo ${{ secrets.ACR_NAME }}.azurecr.io \
     && az acr login --name ${{ secrets.ACR_NAME }}` 
 ```
+
 6. ***Obtener el Token de Acceso a ACR***
 -   **id**: Asigna un ID al paso para referenciarlo más adelante.
 -   **run**: Ejecuta un script que obtiene un token de acceso a ACR y lo guarda en una variable de entorno `TOKEN`.
@@ -171,6 +176,7 @@ jobs:
     TOKEN=$(az acr login --name ${{ secrets.ACR_NAME }} --expose-token --output tsv --query accessToken)
     echo "TOKEN=$TOKEN" >> $GITHUB_ENV` 
 ```
+
 7. ***Uso del Token de ACR para Iniciar Sesión en Docker***
 -   **run**: Utiliza el token obtenido para iniciar sesión en Docker en el registro de contenedores de Azure.
 ```
@@ -179,12 +185,14 @@ jobs:
     echo "Using the ACR token: $TOKEN"
     docker login ${{ secrets.ACR_NAME }}.azurecr.io -u 00000000-0000-0000-0000-000000000000 -p $TOKEN` 
 ```
+
 8. ***Configurar Docker Buildx***
 -   **uses**: Utiliza la acción `docker/setup-buildx-action@v1` para configurar Docker Buildx, que permite construir imágenes multiplataforma.
 ```
 - name: Set up Docker Buildx
   uses: docker/setup-buildx-action@v1` 
 ```
+
 9. ***Construir y Enviar la Imagen Docker a ACR***
 -   **working-directory**: Especifica el directorio donde se ejecutará este paso.
 -   **run**: Ejecuta el comando para construir y enviar la imagen Docker a ACR. Se utiliza `github.sha` para etiquetar la imagen con el hash del commit, y también se etiqueta como `latest`. La etiqueta del bash es util para identificar en el ACR la ultima versión implementada, y la latest la que tomara el web app.
@@ -198,6 +206,7 @@ jobs:
       -f Dockerfile \
       .` 
 ```
+
 10. ***Cerrar Sesión en ACR***
 -   **run**: Ejecuta el comando para cerrar la sesión en ACR.
 ```
@@ -205,6 +214,7 @@ jobs:
   run: |
     docker logout ${{ secrets.ACR_NAME }}.azurecr.io` 
 ```
+
 11. ***Desplegar la Imagen en Azure Web App***
 -   **uses**: Utiliza la acción `azure/webapps-deploy@v2` para desplegar la imagen Docker en una aplicación web en Azure.
 -   **with**: Especifica el nombre de la aplicación web (`app-name`) y la imagen Docker (`images`) que se desplegará.
