@@ -266,6 +266,5 @@ jobs:
 
 **PRUEBAS POST DESPLIEGUE**
 1. #### Hacer un cambio en el repositorio local dentro de la carpeta src y luego seguir los pasos de verificación indicados anteriormente.
-## Mantenimiento y Actualización
 
 
