@@ -27,11 +27,8 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
-      - name: Terraform version
-        uses: terraform version
-
       - name: Terraform init
-        run: terraform init -backend-config-"sas_token=${{ secrets.SAS_TOKEN }}"
+        run: terraform init --backend-config="sas_token=${{ secrets.SAS_TOKEN }}"
         working-directory: ./infra
 
       - name: Terraform validate
