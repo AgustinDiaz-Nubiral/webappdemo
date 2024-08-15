@@ -268,36 +268,4 @@ jobs:
 1. #### Hacer un cambio en el repositorio local dentro de la carpeta src y luego seguir los pasos de verificación indicados anteriormente.
 ## Mantenimiento y Actualización
 
-[](https://github.com/AgustinDiaz-Nubiral/webappdemo#mantenimiento-y-actualizaci%C3%B3n)
 
-Actualización de la Infraestructura:
-
-Explica cómo realizar cambios a la infraestructura existente utilizando terraform plan y terraform apply.
-
-Actualización de la Aplicación:
-
-Detalla cómo actualizar la aplicación y desplegar nuevos cambios.
-
-## Resolución de Problemas
-
-[](https://github.com/AgustinDiaz-Nubiral/webappdemo#resoluci%C3%B3n-de-problemas)
-
-Errores Comunes:
-
-Enumera algunos errores comunes que podrían surgir durante el despliegue y cómo solucionarlos.
-
-Enlaces a Recursos Adicionales:
-
-Proporciona enlaces a la documentación de Terraform, Azure, y cualquier otra fuente relevante.
-
-## Conclusión
-
-[](https://github.com/AgustinDiaz-Nubiral/webappdemo#conclusi%C3%B3n)
-
-Resumen del proceso de despliegue y cualquier recomendación final para futuros despliegues.
-
-## Apéndice
-
-[](https://github.com/AgustinDiaz-Nubiral/webappdemo#ap%C3%A9ndice)
-
-Enlaces Útiles: Proporciona enlaces a la documentación oficial, foros, y otros recursos útiles.
