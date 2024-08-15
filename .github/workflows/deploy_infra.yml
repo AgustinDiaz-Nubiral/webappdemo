@@ -1,0 +1,47 @@
+name: Deploy Infraestructure
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+    - 'infra/**'
+
+jobs:
+  deploy:
+    name: Terraform settings
+    runs-on: ubuntu-latest
+
+    env:
+      AZURE_AD_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+      AZURE_AD_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+      AZURE_SUBCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_AD_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+    
+    defaults:
+      run:
+        working-directory: ./infra
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform version
+        uses: terraform version
+
+      - name: Terraform init
+        run: terraform init -backend-config-"sas_token=${{ secrets.SAS_TOKEN }}"
+        working-directory: ./infra
+
+      - name: Terraform validate
+        run: terraform validate
+        working-directory: ./infra
+
+      - name: Terraform Plan
+        run: terraform plan -var-file terraform.tfvars -out=plan.out
+        working-directory: ./infra
+
+      - name: Terraform Apply
+        run: terraform apply -var-file terraform.tfvars -auto-approve 
+        working-directory: ./infra
