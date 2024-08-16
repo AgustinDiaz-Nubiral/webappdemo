@@ -27,5 +27,5 @@ variable "project" {
 }
 
 variable "coe" {
-  description = "The Nubiral Coe which the resource belongs"
+  description = "The Nubiral Coe which the resource belongs."
 }
