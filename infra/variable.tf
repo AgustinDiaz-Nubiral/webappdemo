@@ -3,7 +3,7 @@ variable "location" {
 }
 
 variable "rgname" {
-  description = "The name of the resource group"
+  description = "The name of the resource group."
 }
 
 variable "createdby" {
