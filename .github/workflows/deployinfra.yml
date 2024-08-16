@@ -9,6 +9,7 @@ on:
 jobs:
   deploy:
     name: Terraform settings
+    working-directory: ./infra 
     runs-on: ubuntu-latest
 
     env:
