@@ -46,7 +46,7 @@ jobs:
           AZURE_AD_CLIENT_SECRET: ${{ steps.azure-creds.outputs.client_secret }}
           AZURE_SUBCRIPTION_ID: ${{ steps.azure-creds.outputs.subscription_id }}
           AZURE_AD_TENANT_ID: ${{ steps.azure-creds.outputs.tenant_id }}
-          run: terraform init -backend-config="resource_group_name=rg-webappdemosa-adiaz" -backend-config="storage_account_name=sawebappdemoadiaz" -backend-config="container_name=webapptfstate" -backend-config="key=stateActions.tfstate"
+        run: terraform init -backend-config="resource_group_name=rg-webappdemosa-adiaz" -backend-config="storage_account_name=sawebappdemoadiaz" -backend-config="container_name=webapptfstate" -backend-config="key=stateActions.tfstate"
         #run: terraform init -backend-config="sas_token=${{ secrets.SAS_TOKEN }}"
        
 
