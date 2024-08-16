@@ -28,7 +28,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Terraform version
-        uses: terraform version
+        run: terraform version
 
       - name: Terraform init
         run: terraform init --backend-config="sas_token=${{ secrets.SAS_TOKEN }}"
