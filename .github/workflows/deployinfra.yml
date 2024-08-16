@@ -21,6 +21,11 @@ jobs:
       run:
         working-directory: ./infra
     steps:
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
       - name: Check out the repo
         uses: actions/checkout@v4
 
@@ -28,20 +33,35 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Terraform version
-        run: terraform version
+        uses: terraform version
 
       - name: Terraform init
-        run: terraform init --backend-config="sas_token=${{ secrets.SAS_TOKEN }}"
+        run: terraform init -backend-config-"sas_token=${{ secrets.SAS_TOKEN }}"
         working-directory: ./infra
 
       - name: Terraform validate
+        env:
+          AZURE_AD_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+          AZURE_AD_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+          AZURE_SUBCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_AD_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
         run: terraform validate
-        working-directory: ./infra
+       
 
       - name: Terraform Plan
-        run: terraform plan -var-file terraform.tfvars -out=plan.out
-        working-directory: ./infra
+        env:
+          AZURE_AD_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+          AZURE_AD_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+          AZURE_SUBCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_AD_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+        run: terraform plan 
+       
 
       - name: Terraform Apply
-        run: terraform apply -var-file terraform.tfvars -auto-approve 
-        working-directory: ./infra
+        env:
+          AZURE_AD_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+          AZURE_AD_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+          AZURE_SUBCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_AD_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+        run: terraform apply -auto-approve
+        
