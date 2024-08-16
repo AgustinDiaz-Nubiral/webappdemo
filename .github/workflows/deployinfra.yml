@@ -10,12 +10,13 @@ jobs:
   deploy:
     name: Terraform settings
     runs-on: ubuntu-latest
-
+    
     env:
       AZURE_AD_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
       AZURE_AD_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
       AZURE_SUBCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_AD_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+      
     
     steps:
       - name: Login to Azure
@@ -25,8 +26,9 @@ jobs:
 
       - name: Extract Azure Credentials
         id: azure-creds
-        working-directory: ./infra 
+         
         run: |
+          cd ./infra
           echo "::set-output name=client_id::$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r .clientId)"
           echo "::set-output name=client_secret::$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r .clientSecret)"
           echo "::set-output name=subscription_id::$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r .subscriptionId)"
