@@ -145,7 +145,7 @@ jobs:
       AZURE_AD_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
     defaults:
        run:
-        working-directory: ./src` 
+        working-directory: ./src 
 ```
 
 4. ***Inicio de sesión en Azure***
