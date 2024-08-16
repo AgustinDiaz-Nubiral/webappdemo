@@ -1,85 +1,37 @@
-name: Deploy Infraestructure
+name: Infrastructure Deployment
 
 on:
   push:
     branches: [ "main" ]
     paths:
-    - 'infra/**'
+      - 'infra/**'
 
 jobs:
   deploy:
     name: Terraform settings
     runs-on: ubuntu-latest
-    
     env:
       AZURE_AD_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
       AZURE_AD_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
-      AZURE_SUBCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_AD_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
-    defaults:
-       run:
-        working-directory: ./infra
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Check out the repo
+      uses: actions/checkout@v3 
+      
+    - name: Terraform init
+      run: terraform init -backend-config="sas_token=${{ secrets.SAS_TOKEN }}"
+      working-directory: ./infra
 
-      - name: Extract Azure Credentials
-        id: azure-creds
-        run: |
-          echo "::set-output name=client_id::$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r .clientId)"
-          echo "::set-output name=client_secret::$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r .clientSecret)"
-          echo "::set-output name=subscription_id::$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r .subscriptionId)"
-          echo "::set-output name=tenant_id::$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r .tenantId)"  
-          
+    - name: Terraform validate
+      run: terraform validate
+      working-directory: ./infra
 
-      - name: Check out the repo
-        uses: actions/checkout@v4
+    - name: Terraform plan
+      run: terraform plan -var-file terraform.tfvars -out=plan.out
+      working-directory: ./infra
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-
-      - name: Terraform init
-        env:
-          AZURE_AD_CLIENT_ID: ${{ steps.azure-creds.outputs.client_id }}
-          AZURE_AD_CLIENT_SECRET: ${{ steps.azure-creds.outputs.client_secret }}
-          AZURE_SUBCRIPTION_ID: ${{ steps.azure-creds.outputs.subscription_id }}
-          AZURE_AD_TENANT_ID: ${{ steps.azure-creds.outputs.tenant_id }}
-        working-directory: ./infra 
-        run: terraform init -backend-config="resource_group_name=rg-webappdemosa-adiaz" -backend-config="storage_account_name=sawebappdemoadiaz" -backend-config="container_name=webapptfstate" -backend-config="key=stateActions.tfstate"
-        #run: terraform init -backend-config="sas_token=${{ secrets.SAS_TOKEN }}"
-       
-
-      - name: Terraform validate
-        working-directory: ./infra 
-        run: terraform validate
-       
-
-      - name: Terraform Plan
-        working-directory: ./infra 
-        #env:
-          #AZURE_AD_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
-          #AZURE_AD_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
-          #AZURE_SUBCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          #AZURE_AD_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
-        run: terraform plan 
-       
-
-      - name: Terraform Apply
-        env:
-          AZURE_AD_CLIENT_ID: ${{ steps.azure-creds.outputs.client_id }}
-          AZURE_AD_CLIENT_SECRET: ${{ steps.azure-creds.outputs.client_secret }}
-          AZURE_SUBCRIPTION_ID: ${{ steps.azure-creds.outputs.subscription_id }}
-          AZURE_AD_TENANT_ID: ${{ steps.azure-creds.outputs.tenant_id }}
-         #AZURE_AD_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
-          #AZURE_AD_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
-          #AZURE_SUBCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          #AZURE_AD_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
-        working-directory: ./infra 
-        run: terraform apply -auto-approve ||echo "Infraestructure already exists"
+    - name: Terraform apply
+      run: terraform apply -var-file terraform.tfvars -auto-approve
+      working-directory: ./infra
         
