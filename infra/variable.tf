@@ -7,7 +7,7 @@ variable "rgname" {
 }
 
 variable "createdby" {
-  description = "The individual or team responsible for creating the resource"
+  description = "The individual or team responsible for creating the resource."
 }
 
 variable "deadline" {
