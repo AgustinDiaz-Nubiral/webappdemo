@@ -21,6 +21,9 @@ jobs:
         working-directory: ./infra
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
       - name: Login to Azure
         uses: azure/login@v1
         with:
