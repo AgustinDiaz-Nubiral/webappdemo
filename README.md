@@ -247,6 +247,7 @@ jobs:
 -   **Navegador Web**:
     1.  Copia la URL de la Web App desde el Portal de Azure.
     2.  Pega la URL en tu navegador y verifica que la aplicación esté funcionando como se espera.
+    3.  En este caso: https://webappdemo-adiaz.azurewebsites.net/sitio/
 
 **PASOS PARA VERIFICAR LA INFRAESTRUCTURA  DESPLEGADA**
 1. ####  *Verificar el Estado de los Recursos en el Portal de Azure*
