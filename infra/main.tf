@@ -44,7 +44,7 @@ resource "azurerm_service_plan" "appplan" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   os_type             = "Linux"
-  sku_name            = "B1"
+  sku_name            = "S1"
 
   tags                = local.tags
 }
@@ -77,12 +77,25 @@ resource "azurerm_linux_web_app" "webappoc" {
 
 }
 
-
-# Asignar permisos ACR Pull para la Web App ------------------------------------------------------------------
-
-/*resource "azurerm_role_assignment" "acr_pull" {
-  principal_id         = azurerm_linux_web_app.webappoc.identity[0].principal_id
-  role_definition_name = "AcrPull"
-  scope                = azurerm_container_registry.acr.id
-}*/
+# Slot de QA para la Web App
+resource "azurerm_linux_web_app_slot" "qa_slot" {
+  name                = "qa"
+  app_service_id    = azurerm_linux_web_app.webappoc.id  # Usar el nombre del web app
   
+
+
+  site_config {
+    minimum_tls_version = "1.2"
+    always_on = true
+  }
+
+  # Configuraciones específicas del slot de QA
+  app_settings = {
+    "APP_ENV" = "QA"
+    # Agrega otras configuraciones específicas del entorno QA aquí
+  }
+
+  depends_on = [azurerm_linux_web_app.webappoc]
+}
+
+
