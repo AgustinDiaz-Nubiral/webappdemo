@@ -90,6 +90,7 @@ resource "azurerm_linux_web_app_slot" "qa_slot" {
   }
 
   app_settings = {
+    "WEBSITES_PORT" = "5000"  # Asegúrate de que esto coincida con el puerto que usa tu contenedor
     "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.acr.login_server}/webapp/qa:latest"
     "DOCKER_REGISTRY_SERVER_USERNAME" = azurerm_container_registry.acr.admin_username
     "DOCKER_REGISTRY_SERVER_PASSWORD" = azurerm_container_registry.acr.admin_password
