@@ -90,7 +90,7 @@ resource "azurerm_linux_web_app_slot" "qa_slot" {
   }
 
   app_settings = {
-    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.acr.login_server}/webapp/image:qa"
+    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.acr.login_server}/webapp/qa:latest"
     "DOCKER_REGISTRY_SERVER_USERNAME" = azurerm_container_registry.acr.admin_username
     "DOCKER_REGISTRY_SERVER_PASSWORD" = azurerm_container_registry.acr.admin_password
     }
