@@ -69,6 +69,6 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ secrets.WEBAPP_NAME }}
-        slot-name: webappdemo-adiaz-qa
+        slot-name: qa
         images: |
           ${{ secrets.ACR_NAME }}.azurecr.io/webapp:qa
