@@ -59,15 +59,10 @@ jobs:
       run: |
         docker logout ${{ secrets.ACR_NAME }}.azurecr.io
 
-    #- name: Deploy to Azure Web App
-     # uses: azure/webapps-deploy@v2
-      #with:
-       # app-name: ${{ secrets.WEBAPP_NAME }}
-        #images: ${{ secrets.ACR_NAME }}.azurecr.io/webapp:latest
-
-    - name: Deploy to Azure Web App Slot
+    - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ secrets.WEBAPP_NAME }}
-        slot-name: qa
         images: ${{ secrets.ACR_NAME }}.azurecr.io/webapp:latest
+
+    
