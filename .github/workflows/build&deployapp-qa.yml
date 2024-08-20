@@ -1,3 +1,4 @@
+
 name: Build and Deploy Docker Image
 
 on:
@@ -66,3 +67,5 @@ jobs:
         slot-name: qa
         images: |
           ${{ secrets.ACR_NAME }}.azurecr.io/webapp:qa
+
+
