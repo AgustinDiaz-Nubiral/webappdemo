@@ -21,7 +21,7 @@ resource "azurerm_resource_group" "rg" {
   name     = var.rgname
   location = var.location
 
-  tags = local.tags
+  tags     = local.tags
 }
 
 #Create Azure Container Registry-------------------------------------------------------------------------------
@@ -33,7 +33,7 @@ resource "azurerm_container_registry" "acr" {
   sku                 = "Basic"
   admin_enabled       = true
   
-  tags = local.tags
+  tags                = local.tags
 }
 
 
@@ -62,7 +62,7 @@ resource "azurerm_linux_web_app" "webappoc" {
 
   site_config {
     minimum_tls_version = "1.2"
-    always_on = true
+    always_on           = true
   }
 
   identity {
@@ -73,13 +73,14 @@ resource "azurerm_linux_web_app" "webappoc" {
     "DOCKER_REGISTRY_SERVER_USERNAME" = azurerm_container_registry.acr.admin_username
     "DOCKER_REGISTRY_SERVER_PASSWORD" = azurerm_container_registry.acr.admin_password
   }
-
 }
+
+
 
 # Slot de QA para la Web App
 resource "azurerm_linux_web_app_slot" "qa_slot" {
   name                = "qa"
-  app_service_id    = azurerm_linux_web_app.webappoc.id  # Usar el nombre del web app
+  app_service_id      = azurerm_linux_web_app.webappoc.id  # Usar el nombre del web app
   
   site_config {
     minimum_tls_version = "1.2"
@@ -98,9 +99,17 @@ resource "azurerm_linux_web_app_slot" "qa_slot" {
     }    
   }
 
-  
+module "networking" {
+  source                  = "./modules/networking"
+  resource_group_id       = azurerm_resource_group.rg.id
+  resource_group_location = azurerm_resource_group.rg.location
+  resource_group_name     = azurerm_resource_group.rg.name
+  service_plan_id         = azurerm_service_plan.appplan.id
+  app_service_id          = azurerm_linux_web_app.webappoc.id
+}
 
-  
+
+
 
 
 
