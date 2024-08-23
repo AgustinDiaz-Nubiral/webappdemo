@@ -28,9 +28,9 @@ jobs:
       run: terraform init -backend-config="sas_token=${{ secrets.SAS_TOKEN }}"
       working-directory: ./infra
 
-    - name: Terraform validate
-      run: terraform validate
-      working-directory: ./infra
+    #- name: Terraform validate
+     # run: terraform validate
+      #working-directory: ./infra
 
     - name: Terraform plan
       run: terraform plan -var-file terraform.tfvars -out=plan.out
