@@ -76,7 +76,7 @@ resource "azurerm_virtual_network_gateway_connection" "vpn_connection" {
 }
 
 
-#Integration Web App - VNet----------------------------------------------------------------------------------------------------
+#Integration Web App - VNet---------------------------------------------------------------------------------------------------
 
 resource "azurerm_app_service_virtual_network_swift_connection" "example" {
   app_service_id      = var.app_service_id
