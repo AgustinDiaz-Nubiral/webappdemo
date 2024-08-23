@@ -75,16 +75,12 @@ site_config {
 identity {
   type = "SystemAssigned"
 }
-  /*app_settings = {
-    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.acr.login_server}"
-    "DOCKER_REGISTRY_SERVER_USERNAME" = azurerm_container_registry.acr.admin_username
-    "DOCKER_REGISTRY_SERVER_PASSWORD" = azurerm_container_registry.acr.admin_password
-  }*/
 }
 
 
 
-# Slot de QA para la Web App
+# Slot de QA para la Web App-----------------------------------------------------------------------------------------
+
 resource "azurerm_linux_web_app_slot" "qa_slot" {
   name                = "qa"
   app_service_id      = azurerm_linux_web_app.webappoc.id  # Usar el nombre del web app
@@ -99,12 +95,12 @@ resource "azurerm_linux_web_app_slot" "qa_slot" {
     type = "SystemAssigned"
   }
 
-  /*app_settings = {
+  app_settings = {
       "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.acr.login_server}"
       "DOCKER_REGISTRY_SERVER_USERNAME" = azurerm_container_registry.acr.admin_username
       "DOCKER_REGISTRY_SERVER_PASSWORD" = azurerm_container_registry.acr.admin_password
       "DOCKER_CUSTOM_IMAGE_NAME"        = "acrappdemoadiaz.azurecr.io/myapp:qa"
-    }*/   
+    } 
   }
 
 module "networking" {
