@@ -84,7 +84,8 @@ resource "azurerm_linux_web_app_slot" "qa_slot" {
   
   site_config {
     minimum_tls_version = "1.2"
-    always_on = true  
+    always_on = true 
+    linux_fx_version = "DOCKER||${azurerm_container_registry.acr.login_server}/webapp:qa"
   }
 
   identity {
