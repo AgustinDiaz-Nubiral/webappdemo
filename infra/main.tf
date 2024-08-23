@@ -63,16 +63,17 @@ resource "azurerm_linux_web_app" "webappoc" {
   site_config {
     minimum_tls_version = "1.2"
     always_on           = true
+    linux_fx_version = "DOCKER||${azurerm_container_registry.acr.login_server}/webapp:latest"
   }
 
   identity {
     type = "SystemAssigned"
   }
-  app_settings = {
+  /*app_settings = {
     "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.acr.login_server}"
     "DOCKER_REGISTRY_SERVER_USERNAME" = azurerm_container_registry.acr.admin_username
     "DOCKER_REGISTRY_SERVER_PASSWORD" = azurerm_container_registry.acr.admin_password
-  }
+  }*/
 }
 
 
@@ -92,12 +93,12 @@ resource "azurerm_linux_web_app_slot" "qa_slot" {
     type = "SystemAssigned"
   }
 
-  app_settings = {
+  /*app_settings = {
       "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.acr.login_server}"
       "DOCKER_REGISTRY_SERVER_USERNAME" = azurerm_container_registry.acr.admin_username
       "DOCKER_REGISTRY_SERVER_PASSWORD" = azurerm_container_registry.acr.admin_password
       "DOCKER_CUSTOM_IMAGE_NAME"        = "acrappdemoadiaz.azurecr.io/myapp:qa"
-    }    
+    }*/   
   }
 
 module "networking" {
